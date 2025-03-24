@@ -20,11 +20,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
+        // Criar lista de participantes
+        const participantsList = details.participants.map(email => 
+          `<li>${email}</li>`
+        ).join('');
+
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <div class="participants-container">
+            <p><strong>Participantes inscritos:</strong></p>
+            <ul class="participants-list">
+              ${participantsList}
+            </ul>
+          </div>
         `;
 
         activitiesList.appendChild(activityCard);
@@ -62,6 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
         signupForm.reset();
+        
+        // Recarregar as atividades para atualizar a lista de participantes
+        fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
